@@ -1,0 +1,84 @@
+*********** To use the methods below, make sure each piece has a boolean attribute called "canReinforce", initialised to true
+	within the constructor.************
+
+
+
+
+   //***Does NOT take terrain into account***
+    public static ArrayList<Piece>[] genReinforcementList(Piece attackingPiece1, Piece attackingPiece2, Piece[][] board){
+        //declare required variables
+        boolean useAsReinforcement;
+        //hold the 2 pieces in an array; easier to manipulate
+        Piece[] attackingPieces = {attackingPiece1, attackingPiece2};
+        
+        //declare and initialise array to hold 2 Piece type arrayLists; [<player1Pieces>, <player2Pieces>)]
+        ArrayList<Piece>[] reinforcementList = new ArrayList[2];
+       //initialise the 2 array lists to hold Piece type objects
+        reinforcementList[0] = new ArrayList<Piece>();
+        reinforcementList[1] = new ArrayList<Piece>();
+        
+        //iterate over each piece
+        for (int i = 0; i < attackingPieces.length; i++){
+            //***Remember to declare and initialise all arrays (reference variables) for each piece within
+                                                                                        // the for loop***
+            //figure out coordinates of attacking piece
+            int[] attackPos = {attackingPieces[i].getY(), attackingPieces[i].getX()}; //(Row, Column)
+            
+            //declare and initialise arrays to hold possible positions for reinforcements
+            int leftPos[] = new int[2], rightPos[] = new int[2], downPos[] = new int[2], upPos[] = new int[2];
+            int possibleReinforcementList[][] = {leftPos, rightPos, downPos, upPos};
+            
+            //figure out coordinates of tiles on all 4 sides of attackPos
+            leftPos[0] = attackPos[0];
+            leftPos[1] = attackPos[1] - 1;
+
+            rightPos[0] = attackPos[0];
+            rightPos[1] = attackPos[1] + 1;
+
+            downPos[0] = attackPos[0] + 1;
+            downPos[1] = attackPos[1];
+
+            upPos[0] = attackPos[0] - 1;
+            upPos[1] = attackPos[1];
+            
+            for (int j = 0; j < possibleReinforcementList.length; j++) {
+                //check if each position is within bounds of board and is held by a piece other than the
+                                                                                        //attacking pieces
+                if (possibleReinforcementList[j][0] >= 0 && possibleReinforcementList[j][0] < board.length && possibleReinforcementList[j][1] >= 0 && possibleReinforcementList[j][1] < board[0].length && board[possibleReinforcementList[j][0]][possibleReinforcementList[j][1]] != null && board[possibleReinforcementList[j][0]][possibleReinforcementList[j][1]] != attackingPiece1 && board[possibleReinforcementList[j][0]][possibleReinforcementList[j][1]] != attackingPiece2) {
+                   Piece possibleReinforcement =  board[possibleReinforcementList[j][0]][possibleReinforcementList[j][1]];
+                    if (possibleReinforcement.inBattle){        //no need to prompt user again
+                        //add piece to correct position in array
+                        reinforcementList[possibleReinforcement.getPlayer() - 1].add(possibleReinforcement);
+                            
+                    }
+                    //make sure user has not already been prompted for choosing piece as reinforcement
+                    else if (possibleReinforcement.canReinforce){
+                        //ask user if he/she wants to deploy piece as reinforcement
+                        useAsReinforcement = promptForReinforcement(possibleReinforcement);
+                        
+                        if (useAsReinforcement){
+                            //add piece to correct position in array
+                            reinforcementList[possibleReinforcement.getPlayer() - 1].add(possibleReinforcement);
+                            //bring piece into battle
+                            possibleReinforcement.inBattle = true;
+                            
+                        }else{
+                            //don't check this piece again
+                            possibleReinforcement.canReinforce = false;
+                        }
+                    }
+                }
+            }
+        }
+        return reinforcementList;         
+    }
+    
+    private static boolean promptForReinforcement(Piece p){
+        int result = JOptionPane.showConfirmDialog(null, "Would you like to use " + p.getName().toUpperCase() + " as Reinforcement?", "Deploy Reinforcement", JOptionPane.YES_NO_OPTION);
+        if (result == 0){
+            return true;
+        }else{
+            return false;
+        }
+    
+    }

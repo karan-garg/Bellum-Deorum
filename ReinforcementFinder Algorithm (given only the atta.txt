@@ -1,0 +1,78 @@
+//look around the 2 attack positions for a piece
+        //figure out the orientation of the 2 two pieces battling
+        if (attackPos1[0] == attackPos2[0]){        //horizontal (same row)
+            // initialise arrays to hold possible positions of reinforcement pieces
+            int[] aboveLeft = new int[2], leftOfLeft = new int[2], belowLeft = new int[2], aboveRight = new int[2], rightOfRight = new int[2], belowRight = new int[2];
+            //store all these positions in a bigger array; easier to manipulate
+            int[][] possibleReinforcementList = {aboveLeft, leftOfLeft, belowLeft, aboveRight, rightOfRight, belowRight};
+
+            //declare arrays to hold left and right positions (of battling pieces)
+            int[] leftAttackPos = attackPos1, rightAttackPos = attackPos2;
+            
+            //figure out left piece and right piece
+            if (attackPos1[1] > attackPos2[1]){
+                leftAttackPos = attackPos2;
+                rightAttackPos = attackPos1;
+            }
+            
+            //define possible positions of reinforcements
+            //LEFT Attacking Piece    
+            aboveLeft[0] = leftAttackPos[0] - 1;
+            aboveLeft[1] = leftAttackPos[1];
+
+            leftOfLeft[0] = leftAttackPos[0];
+            leftOfLeft[1] = leftAttackPos[1] - 1;
+
+            belowLeft[0] = leftAttackPos[0] + 1;
+            belowLeft[1] = leftAttackPos[1];
+
+            //RIGHT Attacking Piece
+            aboveRight[0] = rightAttackPos[0] - 1;
+            aboveRight[1] = rightAttackPos[1];
+
+            rightOfRight[0] = rightAttackPos[0];
+            rightOfRight[1] = rightAttackPos[1] + 1;
+
+            belowRight[0] = rightAttackPos[0] + 1;
+            belowRight[1] = rightAttackPos[1];
+
+        }
+        else if (attackPos1[1] == attackPos2[1]){   //vertical (same column)
+             //initialise arrays to hold possible positions of reinforcement pieces
+            int[] aboveUp = new int[2], leftOfUp = new int[2], rightOfUp = new int[2], belowDown = new int[2], leftOfDown = new int[2], rightOfDown = new int[2];
+            //store all these positions in a bigger array; easier to manipulate
+            int[][] possibleReinforcementList = {aboveUp, leftOfUp, rightOfUp, belowDown, leftOfDown, rightOfDown};
+
+            //declare arrays to hold batttling pieces based on their orientation (up/down)
+            int[] upAttackPos = attackPos1, downAttackPos = attackPos2;
+            
+            //figure out up piece and down piece
+            if (attackPos1[0] > attackPos2[0]){
+                upAttackPos = attackPos2;
+                downAttackPos = attackPos1;
+            }
+            
+            //define possible positions of reinforcements
+            //UP Attacking Piece    
+            aboveUp[0] = upAttackPos[0] - 1;
+            aboveUp[1] = upAttackPos[1];
+
+            leftOfUp[0] = upAttackPos[0];
+            leftOfUp[1] = upAttackPos[1] - 1;
+
+            rightOfUp[0] = upAttackPos[0];
+            rightOfUp[1] = upAttackPos[1] + 1;
+
+            //DOWN Attacking Piece
+            belowDown[0] = downAttackPos[0] + 1;
+            belowDown[1] = downAttackPos[1];
+
+            leftOfDown[0] = downAttackPos[0];
+            leftOfDown[1] = downAttackPos[1] - 1;
+
+            rightOfDown[0] = downAttackPos[0];
+            rightOfDown[1] = downAttackPos[1] + 1;
+
+            
+        } 
+        
